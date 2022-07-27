@@ -4,8 +4,12 @@ import TestComponent from "./TestComponent";
 function Test() {
   const [initialX, setInitalX] = useState(0);
   const [initialY, setInitalY] = useState(0);
+  const [list, setList] = useState([]);
   const itemRef = React.useRef();
   const dropRef = React.useRef();
+  const handleResult = (e) => {
+    console.log("result=>", dropRef.current.innerHTML);
+  };
   const handleDragStart = (e) => {
     console.log("drag start", e);
     console.log("rect", e.target.getBoundingClientRect());
@@ -18,12 +22,15 @@ function Test() {
     e.preventDefault();
     console.log("item ref", itemRef);
     //itemRef.current.style.position = "absolute";
-    let left = e.pageX + "px";
-    let top = e.pageY + "px";
-    console.log("left", left);
-    console.log("top", top);
-    const elem = React.createElement(TestComponent, [top, left], null);
-    console.log("elem", elem);
+    let leftX = e.pageX + "px";
+    let topY = e.pageY + "px";
+    //console.log("left", left);
+    //console.log("top", top);
+    setList((prev) => {
+      return [...prev, { left: leftX, top: topY }];
+    });
+    //console.log("elem", elem);
+
     //React.
   };
   const handleDragOver = (e) => {
@@ -37,7 +44,14 @@ function Test() {
         ref={dropRef}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
-      ></div>
+      >
+        {list.map((item) => {
+          return React.createElement(TestComponent, {
+            left: item.left,
+            top: item.top,
+          });
+        })}
+      </div>
       <div
         className="testItem"
         draggable
@@ -46,6 +60,7 @@ function Test() {
       >
         Test
       </div>
+      <button onClick={handleResult}>Final Result</button>
     </div>
   );
 }
