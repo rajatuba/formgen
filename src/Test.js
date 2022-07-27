@@ -15,14 +15,14 @@ function Test() {
   };
   const handleDrop = (e) => {
     console.log("drop", e);
-    //e.preventDefault();
+    e.preventDefault();
     console.log("item ref", itemRef);
     //itemRef.current.style.position = "absolute";
     let left = e.pageX + "px";
     let top = e.pageY + "px";
     console.log("left", left);
     console.log("top", top);
-    React.createElement(TestComponent, [left, top]);
+    //React.
   };
   const handleDragOver = (e) => {
     e.preventDefault();
