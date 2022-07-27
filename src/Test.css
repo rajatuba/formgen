@@ -1,0 +1,11 @@
+.dropContainer {
+  height: 500px;
+  width: 700px;
+  border: 1px solid black;
+}
+.testItem {
+  height: 30px;
+  width: 30px;
+  background-color: aqua;
+  box-sizing: border-box;
+}
