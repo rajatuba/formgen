@@ -22,6 +22,8 @@ function Test() {
     let top = e.pageY + "px";
     console.log("left", left);
     console.log("top", top);
+    const elem = React.createElement(TestComponent, [top, left], null);
+    console.log("elem", elem);
     //React.
   };
   const handleDragOver = (e) => {

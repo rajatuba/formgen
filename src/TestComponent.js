@@ -7,8 +7,8 @@ function TestComponent(props) {
       className="testItem"
       style={{
         position: "absolute",
-        top: `${props.top}`,
-        left: `${props.left}`,
+        top: `${props[0]}`,
+        left: `${props[1]}`,
       }}
     >
       Test Copy
