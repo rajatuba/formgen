@@ -1,3 +1,8 @@
+.testContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .dropContainer {
   height: 500px;
   width: 700px;
@@ -8,4 +13,13 @@
   width: 40px;
   background-color: aqua;
   box-sizing: border-box;
+}
+.resultButton {
+  height: 30px;
+  width: 100px;
+}
+.itemOption {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }

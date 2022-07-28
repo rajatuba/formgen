@@ -2,17 +2,24 @@ import React from "react";
 
 function TestComponent(props) {
   console.log("new elem", props);
+  const elemRef = React.useRef();
+  const handleDragStart = () => {
+    props.setElemMove(elemRef);
+    console.log("elemRef:", elemRef);
+  };
   return (
-    <div
-      className="testItem"
+    <input
+      type="text"
+      placeholder="Enter text"
+      draggable
+      ref={elemRef}
+      onDragStart={handleDragStart}
       style={{
         position: "absolute",
         top: `${props.top}`,
         left: `${props.left}`,
       }}
-    >
-      Testing
-    </div>
+    />
   );
 }
 export default TestComponent;

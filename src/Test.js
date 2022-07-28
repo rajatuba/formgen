@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import ItemOption from "./ItemOption";
 import "./Test.css";
 import TestComponent from "./TestComponent";
 function Test() {
+  const [creatingNew, setCreatingNew] = useState(false);
+  const [elemMove, setElemMove] = useState();
   const [initialX, setInitalX] = useState(0);
   const [initialY, setInitalY] = useState(0);
   const [list, setList] = useState([]);
@@ -10,35 +13,36 @@ function Test() {
   const handleResult = (e) => {
     console.log("result=>", dropRef.current.innerHTML);
   };
-  const handleDragStart = (e) => {
+  /*const handleDragStart = (e) => {
     console.log("drag start", e);
     console.log("rect", e.target.getBoundingClientRect());
     const rect = e.target.getBoundingClientRect();
     setInitalX(rect.x);
     setInitalY(rect.y);
-  };
+    setCreatingNew(true);
+  };*/
   const handleDrop = (e) => {
+    console.log("elemMove", elemMove);
     console.log("drop", e);
     e.preventDefault();
-    console.log("item ref", itemRef);
-    //itemRef.current.style.position = "absolute";
     let leftX = e.pageX + "px";
     let topY = e.pageY + "px";
-    //console.log("left", left);
-    //console.log("top", top);
-    setList((prev) => {
-      return [...prev, { left: leftX, top: topY }];
-    });
-    //console.log("elem", elem);
-
-    //React.
+    if (creatingNew) {
+      setList((prev) => {
+        return [...prev, { left: leftX, top: topY }];
+      });
+      setCreatingNew(false);
+    } else {
+      elemMove.current.style.left = e.pageX + "px";
+      elemMove.current.style.top = e.pageY + "px";
+    }
   };
   const handleDragOver = (e) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "all";
   };
   return (
-    <div>
+    <div className="testContainer">
       <div
         className="dropContainer"
         ref={dropRef}
@@ -49,18 +53,16 @@ function Test() {
           return React.createElement(TestComponent, {
             left: item.left,
             top: item.top,
+            setElemMove,
           });
         })}
       </div>
-      <div
-        className="testItem"
-        draggable
-        onDragStart={handleDragStart}
-        ref={itemRef}
-      >
-        Test
+      <div>
+        <ItemOption setElemMove={setElemMove} setCreatingNew={setCreatingNew} />
       </div>
-      <button onClick={handleResult}>Final Result</button>
+      <button className="resultButton" onClick={handleResult}>
+        Final Result
+      </button>
     </div>
   );
 }
