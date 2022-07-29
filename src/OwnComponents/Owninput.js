@@ -1,5 +1,5 @@
 import React from "react";
-import { Input } from "antd";
+import { Input, Modal } from "antd";
 import { MinusCircleOutlined } from "@ant-design/icons";
 const Owninput = (props) => {
   const ref = React.useRef();
@@ -20,29 +20,30 @@ const Owninput = (props) => {
   };
   console.log("input props", props);
   return (
-    <label
-      draggable
-      onDragStart={props.move ? handleMoveStart : handleDragStart}
-      ref={ref}
-      style={
-        props.move
-          ? {
-              position: "absolute",
-              top: `${props.top}`,
-              left: `${props.left}`,
-            }
-          : null
-      }
-    >
-      {props.label}
-      <Input placeholder={props.placeholder} />
-      {props.move ? (
-        <button onClick={handleDelete}>
-          <MinusCircleOutlined />
-        </button>
-      ) : null}
-      
-    </label>
+    <>
+      <label
+        draggable
+        onDragStart={props.move ? handleMoveStart : handleDragStart}
+        ref={ref}
+        style={
+          props.move
+            ? {
+                position: "absolute",
+                top: `${props.top}`,
+                left: `${props.left}`,
+              }
+            : null
+        }
+      >
+        {props.label}
+        <Input placeholder={props.placeholder} />
+        {props.move ? (
+          <button onClick={handleDelete}>
+            <MinusCircleOutlined />
+          </button>
+        ) : null}
+      </label>
+    </>
   );
 };
 export default Owninput;

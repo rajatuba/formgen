@@ -21,6 +21,7 @@ export const OPTIONLIST = [
     component: Ownradio,
     name: "radio",
     value: "radio",
+    children: [],
   },
   {
     type: "checkbox",
