@@ -6,6 +6,7 @@ function TestComponent(props) {
   const handleDragStart = () => {
     props.setElemMove(elemRef);
     console.log("elemRef:", elemRef);
+    console.log("mykey", props.myKey);
   };
   return (
     <input
@@ -14,6 +15,7 @@ function TestComponent(props) {
       draggable
       ref={elemRef}
       onDragStart={handleDragStart}
+      key={props.myKey}
       style={{
         position: "absolute",
         top: `${props.top}`,

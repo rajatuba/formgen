@@ -1,12 +1,26 @@
 import React from "react";
-import TextInput from "./TestComponent/OptionComponent/TextInput";
-import TextareaInput from "./TestComponent/OptionComponent/TextareaInput";
+import { OwnInput, OwnTextArea, OwnCheckBox, OwnRadio } from "./OwnComponents";
+import { OPTIONLIST } from "./TestComponent/OptionElementList";
 
 function ItemOption(props) {
   return (
     <div className="itemOption">
-      <TextInput {...props} />
-      <TextareaInput {...props} />
+      {OPTIONLIST.map((item) => {
+        console.log("option item", item);
+
+        switch (item.type) {
+          case "textarea":
+            return React.createElement(OwnTextArea, {
+              label: item.label,
+              placeholder: item.placeholder,
+            });
+          default:
+            return React.createElement(OwnInput, {
+              label: item.label,
+              placeholder: item.placeholder,
+            });
+        }
+      })}
     </div>
   );
 }

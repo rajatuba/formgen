@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import ItemOption from "./ItemOption";
+
 import "./Test.css";
 import TestComponent from "./TestComponent";
 function App() {
   const [creatingNew, setCreatingNew] = useState(false);
   const [elemMove, setElemMove] = useState();
-  const [initialX, setInitalX] = useState(0);
-  const [initialY, setInitalY] = useState(0);
+  //const [initialX, setInitalX] = useState(0);
+  //const [initialY, setInitalY] = useState(0);
   const [list, setList] = useState([]);
-  const itemRef = React.useRef();
+  //const itemRef = React.useRef();
   const dropRef = React.useRef();
   const handleResult = (e) => {
     console.log("result=>", dropRef.current.innerHTML);
+    console.log("list", list);
   };
   /*const handleDragStart = (e) => {
     console.log("drag start", e);
@@ -50,11 +52,12 @@ function App() {
         onDrop={handleDrop}
         onDragOver={handleDragOver}
       >
-        {list.map((item) => {
+        {list.map((item, key) => {
           return React.createElement(TestComponent, {
             left: item.left,
             top: item.top,
             setElemMove,
+            myKey: key,
           });
         })}
       </div>

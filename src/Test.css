@@ -23,3 +23,7 @@
   flex-direction: column;
   justify-content: space-evenly;
 }
+.checkOptions {
+  display: flex;
+  flex-direction: column;
+}
