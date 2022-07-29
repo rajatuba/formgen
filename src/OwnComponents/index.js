@@ -2,8 +2,6 @@ import React from "react";
 import { Input, Checkbox, Radio } from "antd";
 const { TextArea } = Input;
 
-
-
 export const Owntextarea = (props) => {
   const ref = React.useRef();
   const handleDragStart = (e) => {

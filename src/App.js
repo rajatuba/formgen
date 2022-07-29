@@ -50,6 +50,11 @@ function App() {
     e.preventDefault();
     e.dataTransfer.dropEffect = "all";
   };
+  const handleDelete = (e) => {
+    let temp = [...list];
+    temp.splice(e, 1);
+    setList(temp);
+  };
   return (
     <div className="testContainer">
       <div
@@ -63,7 +68,8 @@ function App() {
           return React.createElement(item.component, {
             ...item,
             setElemMove,
-            myKey: key,
+            index: key,
+            handleDelete,
           });
         })}
       </div>

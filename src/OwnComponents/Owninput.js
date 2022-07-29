@@ -1,5 +1,6 @@
 import React from "react";
 import { Input } from "antd";
+import { MinusCircleOutlined } from "@ant-design/icons";
 const Owninput = (props) => {
   const ref = React.useRef();
   const handleDragStart = (e) => {
@@ -10,6 +11,12 @@ const Owninput = (props) => {
   };
   const handleMoveStart = (e) => {
     props.setElemMove(ref);
+  };
+
+  const handleDelete = () => {
+    console.log("delete", props.index);
+    //props.setListIndex(props.index);
+    props.handleDelete(props.index);
   };
   console.log("input props", props);
   return (
@@ -29,6 +36,12 @@ const Owninput = (props) => {
     >
       {props.label}
       <Input placeholder={props.placeholder} />
+      {props.move ? (
+        <button onClick={handleDelete}>
+          <MinusCircleOutlined />
+        </button>
+      ) : null}
+      
     </label>
   );
 };
