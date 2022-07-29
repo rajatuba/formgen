@@ -1,27 +1,27 @@
+import { Owninput } from "../OwnComponents";
 export const OPTIONLIST = [
   {
     type: "text",
     placeholder: "Single Line Text Input",
     label: "Input label",
-    component: "OwnInput",
+    component: Owninput,
   },
   {
     type: "textarea",
     placeholder: "Multiple Line Text Input",
     label: "Input Label",
-    component: "OwnTextArea",
+    component: Owntextarea,
   },
-  /*
   {
     type: "radio",
-    component: "OwnRadio",
+    component: Ownradio,
     name: "radio",
     value: "radio",
   },
   {
     type: "checkbox",
-    component: "OwnCheckbox",
+    component: Owncheckbox,
     name: "checkbox",
     value: "checkbox",
-  },*/
+  },
 ];

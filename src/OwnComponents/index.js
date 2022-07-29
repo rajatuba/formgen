@@ -2,7 +2,7 @@ import React from "react";
 import { Input, Checkbox, Radio } from "antd";
 const { TextArea } = Input;
 
-export const OwnInput = (props) => {
+export const Owninput = (props) => {
   console.log("input props", props);
   return (
     <label>
@@ -12,7 +12,7 @@ export const OwnInput = (props) => {
   );
 };
 
-export const OwnTextArea = (props) => {
+export const Owntextarea = (props) => {
   return (
     <label>
       {props.label}
@@ -21,9 +21,9 @@ export const OwnTextArea = (props) => {
   );
 };
 
-export const OwnCheckBox = (props) => {
+export const Owncheckbox = (props) => {
   return <Checkbox value={props.value}>{props.name}</Checkbox>;
 };
-export const OwnRadio = (props) => {
+export const Ownradio = (props) => {
   return <Radio value={props.value}>{props.name}</Radio>;
 };

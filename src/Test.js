@@ -1,7 +1,12 @@
 import React from "react";
-import CheckInput from "./TestComponent/OptionComponent/CheckInput";
+import { Owninput } from "./OwnComponents";
 
 function Test() {
-  return <CheckInput />;
+  let temp = {
+    component: Owninput,
+    label: "test",
+    placeholder: "place",
+  };
+  return React.createElement(temp.component, temp);
 }
 export default Test;
