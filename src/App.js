@@ -1,39 +1,36 @@
 import React, { useState } from "react";
 import ItemOption from "./ItemOption";
 import { OPTIONLIST } from "./TestComponent/OptionElementList";
-
-import "./Test.css";
-import TestComponent from "./TestComponent";
+import "antd/dist/antd.min.css";
+import "./App.css";
 function App() {
+  //useState
   const [creatingNew, setCreatingNew] = useState(false);
   const [elemMove, setElemMove] = useState();
   const [optionIndex, setOptionIndex] = useState(0);
-  //const [initialX, setInitalX] = useState(0);
-  //const [initialY, setInitalY] = useState(0);
   const [list, setList] = useState([]);
-  //const itemRef = React.useRef();
+
+  //drop box ref
   const dropRef = React.useRef();
-  const handleResult = (e) => {
-    console.log("result=>", dropRef.current.innerHTML);
+
+  //final result
+  const handleResult = () => {
     console.log("list", list);
   };
-  /*const handleDragStart = (e) => {
-    console.log("drag start", e);
-    console.log("rect", e.target.getBoundingClientRect());
-    const rect = e.target.getBoundingClientRect();
-    setInitalX(rect.x);
-    setInitalY(rect.y);
-    setCreatingNew(true);
-  };*/
+
+  //updating elements data
+  const handleUpdate = (data, index) => {
+    let updateList = [...list];
+    updateList[index] = data;
+    setList(updateList);
+  };
+
+  //drop control
   const handleDrop = (e) => {
-    //console.log("elemMove", elemMove);
-    // /console.log("key", elemMove.current.key());
-    //console.log("drop", e);
     e.preventDefault();
     let leftX = e.pageX + "px";
     let topY = e.pageY + "px";
     if (creatingNew) {
-      console.log("creating new");
       setList((prev) => {
         return [
           ...prev,
@@ -50,13 +47,17 @@ function App() {
     e.preventDefault();
     e.dataTransfer.dropEffect = "all";
   };
+
+  //deleting element
   const handleDelete = (e) => {
     let temp = [...list];
     temp.splice(e, 1);
     setList(temp);
   };
+
   return (
     <div className="testContainer">
+      {/*Drop Box*/}
       <div
         className="dropContainer"
         ref={dropRef}
@@ -67,12 +68,16 @@ function App() {
           console.log("item map", item);
           return React.createElement(item.component, {
             ...item,
+            item: item,
             setElemMove,
             index: key,
             handleDelete,
+            key: key,
+            handleUpdate,
           });
         })}
       </div>
+      {/*Option Box */}
       <div>
         <ItemOption
           setElemMove={setElemMove}
@@ -80,6 +85,7 @@ function App() {
           setOptionIndex={setOptionIndex}
         />
       </div>
+      {/* Final Result */}
       <button className="resultButton" onClick={handleResult}>
         Final Result
       </button>

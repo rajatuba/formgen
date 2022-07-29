@@ -8,12 +8,6 @@
   width: 700px;
   border: 1px solid black;
 }
-.testItem {
-  height: 30px;
-  width: 40px;
-  background-color: aqua;
-  box-sizing: border-box;
-}
 .resultButton {
   height: 30px;
   width: 100px;

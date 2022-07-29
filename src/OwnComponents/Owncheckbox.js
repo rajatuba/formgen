@@ -1,11 +1,35 @@
-import React from "react";
-import Checkbox from "antd/lib/checkbox/Checkbox";
-import { MinusCircleOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
+import { Checkbox, Form, Input, Modal } from "antd";
+import { MinusCircleOutlined, EditOutlined } from "@ant-design/icons";
+import { CheckItem, InputItem } from "./commonComp";
 
 export const Owncheckbox = (props) => {
+  //useState
+  const [showModal, setShowModal] = useState(false);
+  const [changes, setChanges] = useState(props.item);
+
+  //modal and modal-form Controls
+  const handleshowModal = () => {
+    setShowModal(true);
+  };
+  const handleCancel = () => {
+    setShowModal(false);
+  };
+  const handleChange = (changedField) => {
+    let change = changes;
+    change[changedField[0].name[0]] = changedField[0].value;
+    setChanges(change);
+  };
+  const handleSubmit = () => {
+    props.handleUpdate(changes, props.index);
+    setShowModal(false);
+  };
+
+  //element reference
   const ref = React.useRef();
+
+  //drag controls
   const handleDragStart = (e) => {
-    console.log("input", e);
     props.setElemMove(ref);
     props.setCreatingNew(true);
     props.setOptionIndex(props.index);
@@ -13,9 +37,9 @@ export const Owncheckbox = (props) => {
   const handleMoveStart = (e) => {
     props.setElemMove(ref);
   };
+
+  //delete element controls
   const handleDelete = () => {
-    console.log("delete", props.index);
-    //props.setListIndex(props.index);
     props.handleDelete(props.index);
   };
   return (
@@ -33,12 +57,35 @@ export const Owncheckbox = (props) => {
           : null
       }
     >
-      <Checkbox value={props.value}>{props.name}</Checkbox>
+      <Checkbox value={props.value} checked={props.defaultChecked}>
+        {props.name}
+      </Checkbox>
       {props.move ? (
-        <button onClick={handleDelete}>
-          <MinusCircleOutlined />
-        </button>
+        <>
+          <button onClick={handleDelete}>
+            <MinusCircleOutlined />
+          </button>
+          <button onClick={handleshowModal}>
+            <EditOutlined />
+          </button>
+        </>
       ) : null}
+
+      {/* Modal and form for updating values */}
+      <Modal visible={showModal} onCancel={handleCancel} onOk={handleSubmit}>
+        <Form
+          initialValues={{
+            value: props.value,
+            name: props.name,
+            defaultChecked: props.defaultChecked,
+          }}
+          onFieldsChange={handleChange}
+        >
+          <InputItem name="name" label="Name" />
+          <InputItem name="value" label="Value" />
+          <CheckItem name="defaultChecked" />
+        </Form>
+      </Modal>
     </div>
   );
 };

@@ -1,11 +1,36 @@
-import React from "react";
-import TextArea from "antd/lib/input/TextArea";
-import { MinusCircleOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
+import { Input, Modal, Form } from "antd";
+import { MinusCircleOutlined, EditOutlined } from "@ant-design/icons";
+import { InputItem } from "./commonComp";
+const { TextArea } = Input;
 
 export const Owntextarea = (props) => {
+  //useState
+  const [showModal, setShowModal] = useState(false);
+  const [changes, setChanges] = useState(props.item);
+
+  //modal and modal-form controls
+  const handleshowModal = () => {
+    setShowModal(true);
+  };
+  const handleCancel = () => {
+    setShowModal(false);
+  };
+  const handleChange = (changedField) => {
+    let change = changes;
+    change[changedField[0].name[0]] = changedField[0].value;
+    setChanges(change);
+  };
+  const handleSubmit = () => {
+    props.handleUpdate(changes, props.index);
+    setShowModal(false);
+  };
+
+  //element ref
   const ref = React.useRef();
+
+  //drag control
   const handleDragStart = (e) => {
-    console.log("input", e);
     props.setElemMove(ref);
     props.setCreatingNew(true);
     props.setOptionIndex(props.index);
@@ -13,12 +38,12 @@ export const Owntextarea = (props) => {
   const handleMoveStart = (e) => {
     props.setElemMove(ref);
   };
+
+  //delete control
   const handleDelete = () => {
-    console.log("delete", props.index);
-    //props.setListIndex(props.index);
     props.handleDelete(props.index);
   };
-  console.log("textarea props", props);
+
   return (
     <label
       draggable
@@ -37,10 +62,31 @@ export const Owntextarea = (props) => {
       {props.label}
       <TextArea placeholder={props.placeholder}></TextArea>
       {props.move ? (
-        <button onClick={handleDelete}>
-          <MinusCircleOutlined />
-        </button>
+        <>
+          <button onClick={handleDelete}>
+            <MinusCircleOutlined />
+          </button>
+          <button onClick={handleshowModal}>
+            <EditOutlined />
+          </button>
+        </>
       ) : null}
+
+      {/* Modal and form for updating */}
+      <Modal visible={showModal} onCancel={handleCancel} onOk={handleSubmit}>
+        <Form
+          initialValues={{
+            label: props.label,
+            name: props.name,
+            placeholder: props.placeholder,
+          }}
+          onFieldsChange={handleChange}
+        >
+          <InputItem name="name" label="name" />
+          <InputItem name="label" label="Label" />
+          <InputItem name="placeholder" label="Placeholder" />
+        </Form>
+      </Modal>
     </label>
   );
 };
