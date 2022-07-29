@@ -1,4 +1,5 @@
-import { Owninput } from "../OwnComponents";
+import { Owncheckbox, Owntextarea, Ownradio } from "../OwnComponents";
+import Owninput from "../OwnComponents/Owninput";
 export const OPTIONLIST = [
   {
     type: "text",

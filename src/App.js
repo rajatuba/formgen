@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import ItemOption from "./ItemOption";
+import { OPTIONLIST } from "./TestComponent/OptionElementList";
 
 import "./Test.css";
 import TestComponent from "./TestComponent";
 function App() {
   const [creatingNew, setCreatingNew] = useState(false);
   const [elemMove, setElemMove] = useState();
+  const [optionIndex, setOptionIndex] = useState(0);
   //const [initialX, setInitalX] = useState(0);
   //const [initialY, setInitalY] = useState(0);
   const [list, setList] = useState([]);
@@ -24,15 +26,19 @@ function App() {
     setCreatingNew(true);
   };*/
   const handleDrop = (e) => {
-    console.log("elemMove", elemMove);
+    //console.log("elemMove", elemMove);
     // /console.log("key", elemMove.current.key());
-    console.log("drop", e);
+    //console.log("drop", e);
     e.preventDefault();
     let leftX = e.pageX + "px";
     let topY = e.pageY + "px";
     if (creatingNew) {
+      console.log("creating new");
       setList((prev) => {
-        return [...prev, { left: leftX, top: topY }];
+        return [
+          ...prev,
+          { left: leftX, top: topY, ...OPTIONLIST[optionIndex], move: true },
+        ];
       });
       setCreatingNew(false);
     } else {
@@ -53,16 +59,20 @@ function App() {
         onDragOver={handleDragOver}
       >
         {list.map((item, key) => {
-          return React.createElement(TestComponent, {
-            left: item.left,
-            top: item.top,
+          console.log("item map", item);
+          return React.createElement(item.component, {
+            ...item,
             setElemMove,
             myKey: key,
           });
         })}
       </div>
       <div>
-        <ItemOption setElemMove={setElemMove} setCreatingNew={setCreatingNew} />
+        <ItemOption
+          setElemMove={setElemMove}
+          setCreatingNew={setCreatingNew}
+          setOptionIndex={setOptionIndex}
+        />
       </div>
       <button className="resultButton" onClick={handleResult}>
         Final Result
