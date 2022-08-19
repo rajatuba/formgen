@@ -1,95 +1,112 @@
-import React, { useState } from "react";
-import ItemOption from "./ItemOption";
-import { OPTIONLIST } from "./TestComponent/OptionElementList";
-import "antd/dist/antd.min.css";
-import "./App.css";
+import React, { useEffect, useState } from "react";
+import { Checkbox, Modal } from "antd";
+import { useForm } from "react-hook-form";
+const DATA = [
+  { value: "first", label: "First" },
+  { value: "second", label: "Second" },
+  { value: "third", label: "Third" },
+];
 function App() {
-  //useState
-  const [creatingNew, setCreatingNew] = useState(false);
-  const [elemMove, setElemMove] = useState();
-  const [optionIndex, setOptionIndex] = useState(0);
-  const [list, setList] = useState([]);
+  const [children, setChildren] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalList, setModalList] = useState([]);
+  const { register, handleSubmit } = useForm();
+  const onSubmit = (data) => console.log("data", data);
+  useEffect(() => {
+    setChildren(DATA);
+  }, []);
 
-  //drop box ref
-  const dropRef = React.useRef();
+  useEffect(() => {
+    setModalList(children);
+  }, [children]);
 
-  //final result
-  const handleResult = () => {
-    console.log("list", list);
+  const handleModalShow = () => {
+    setModalVisible(true);
+    setModalList(children);
   };
-
-  //updating elements data
-  const handleUpdate = (data, index) => {
-    let updateList = [...list];
-    updateList[index] = data;
-    setList(updateList);
+  const handleModalUpdate = () => {
+    console.log("modalList", modalList);
+    setChildren(modalList);
+    setModalVisible(false);
   };
-
-  //drop control
-  const handleDrop = (e) => {
-    e.preventDefault();
-    let leftX = e.pageX + "px";
-    let topY = e.pageY + "px";
-    if (creatingNew) {
-      setList((prev) => {
-        return [
-          ...prev,
-          { left: leftX, top: topY, ...OPTIONLIST[optionIndex], move: true },
-        ];
-      });
-      setCreatingNew(false);
-    } else {
-      elemMove.current.style.left = e.pageX + "px";
-      elemMove.current.style.top = e.pageY + "px";
+  const handleAddCheckbox = () => {
+    let temp = [...modalList];
+    temp.push({ value: "new", label: "new" });
+    setModalList(temp);
+  };
+  const handleModalClose = () => {
+    setModalVisible(false);
+  };
+  const handleLabelChange = (index, label) => {
+    console.log("index", index, "\n label", label);
+    let temp = [...modalList];
+    temp[index].label = label;
+    setModalList(temp);
+  };
+  const handleValueChange = (index, value) => {
+    if (value.length === 0) {
+      return alert("value can't be null");
     }
+    let temp = [...modalList];
+    temp[index].value = value;
+    setModalList(temp);
   };
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "all";
+  const handleDelete = (index) => {
+    let temp = [...modalList];
+    temp.splice(index, 1);
+    console.log("temp delete", temp);
+    setChildren(temp);
   };
-
-  //deleting element
-  const handleDelete = (e) => {
-    let temp = [...list];
-    temp.splice(e, 1);
-    setList(temp);
-  };
-
+  console.log("children", children);
   return (
-    <div className="testContainer">
-      {/*Drop Box*/}
-      <div
-        className="dropContainer"
-        ref={dropRef}
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
+    <>
+      {children?.map((item, i) => {
+        console.log("child item", item);
+        return (
+          <>
+            <label key={i}>
+              {item.label}
+              <input type="checkbox" value={item.value} />
+            </label>
+            <button onClick={() => handleDelete(i)}>Delete</button>
+          </>
+        );
+      })}
+      <button type="submit">Submit</button>
+      <button onClick={handleModalShow}>Edit</button>
+      <Modal
+        visible={modalVisible}
+        onOk={handleModalUpdate}
+        onCancel={handleModalClose}
+        destroyOnClose
+        okText="Update"
       >
-        {list.map((item, key) => {
-          console.log("item map", item);
-          return React.createElement(item.component, {
-            ...item,
-            item: item,
-            setElemMove,
-            index: key,
-            handleDelete,
-            key: key,
-            handleUpdate,
-          });
+        {modalList?.map((item, i) => {
+          return (
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              {i + 1}
+              <label>
+                Label :
+                <input
+                  type="text"
+                  onChange={(e) => handleLabelChange(i, e.target.value)}
+                  defaultValue={item.label}
+                />
+              </label>
+              <label>
+                Value:
+                <input
+                  type="text"
+                  onChange={(e) => handleValueChange(i, e.target.value)}
+                  defaultValue={item.value}
+                />
+              </label>
+            </div>
+          );
         })}
-      </div>
-      {/*Option Box */}
-      <div>
-        <ItemOption
-          setElemMove={setElemMove}
-          setCreatingNew={setCreatingNew}
-          setOptionIndex={setOptionIndex}
-        />
-      </div>
-      {/* Final Result */}
-      <button className="resultButton" onClick={handleResult}>
-        Final Result
-      </button>
-    </div>
+        <button onClick={handleAddCheckbox}>Add New</button>
+      </Modal>
+    </>
   );
 }
 export default App;
